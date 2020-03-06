@@ -56,11 +56,12 @@ def init_api(engine):
             warnings.simplefilter("ignore", category=exc.SAWarning)
             try:
                 insp = reflection.Inspector.from_engine(engine)
-                #In the future we may want to restrict this to only tables with 'ODM2'
+                metadata = MetaData(bind=engine)
                 for schema in insp.get_schema_names():
-                    metadata = MetaData(schema=schema)
-                    ModelBase.metadata = metadata
-                    ModelBase.prepare(engine, reflect=True)
+                    if 'ODM2' in schema:
+                        metadata.reflect(schema=schema)
+                ModelBase.metadata = metadata
+                ModelBase.prepare(reflect=True)
                 initialized = True
                 ODM2Models = ModelBase.classes
             except: #TODO we should figure out now to surpress these warning - this isn't it though
