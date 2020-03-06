@@ -1,32 +1,16 @@
 from __future__ import (absolute_import, division, print_function)
 
-from odm2api import serviceBase
+from odm2api import ServiceBase
 from odm2api.models import TimeSeriesResultValues
 
-
-__author__ = 'jmeline'
-
-# Annotations
-
-
-class DeleteODM2(serviceBase):
+class DeleteODM2(ServiceBase):
 
     def remove(self, obj):
         self._session.delete(obj)
-
-# CV
-# Core
-# Data Quality
-# Equipment
-# Extension Properties
-# External Identifiers
-# Lab Analyses
-# Provenance
-# Annotations
-# Sampling Features
-# Sensors
-# Result Values
-
+        self._session.commit()
+        self._session.close()
+        
+    # TODO: review this method
     def deleteTSRValues(self, ids=None, startdate=None, dates=None):
 
         q = self._session.query(TimeSeriesResultValues)

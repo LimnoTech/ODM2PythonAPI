@@ -46,3 +46,5 @@ log
 .ipynb_checkpoints
 .cache
 .idea
+Testing.ipynb
+Examples/Development.ipynb

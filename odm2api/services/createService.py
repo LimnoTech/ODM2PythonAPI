@@ -2,140 +2,95 @@ from __future__ import (absolute_import, division, print_function)
 
 import uuid
 
-from odm2api import serviceBase
-from odm2api.models import TimeSeriesResultValues
+from odm2api import ServiceBase
 
-__author__ = 'sreeder'
-
-
-class CreateODM2(serviceBase):
+class CreateODM2(ServiceBase):
     # Annotations
 
-    def create(self, value):
+    #TODO - talk to Anothony about the need for some many create methods
+    #At a minimum we should use private method to reduce the redundate code
+    def __create__(self, value):
         self._session.add(value)
         self._session.commit()
+        self._session.close()
         return value
-
+        
+    def create(self, value):
+        return self.__create__(value)
+    
     def createAll(self, values):
-        self._session.add_all(values)
-        self._session.commit()
-        return values
+        return self.__create__(value)
 
     def createVariable(self, var):
-        self._session.add(var)
-        self._session.commit()
-
-        return var
+        return self.__create__(value)
 
     def createMethod(self, method):
-        self._session.add(method)
-        self._session.commit()
-        return method
+        return self.__create__(value)
 
     def createProcessingLevel(self, proclevel):
-        self._session.add(proclevel)
-        self._session.commit()
-        return proclevel
-
+        return self.__create__(proclevel)
+    
     def createSamplingFeature(self, samplingfeature):
         if samplingfeature.SamplingFeatureUUID is None:
             samplingfeature.SamplingFeatureUUID = str(uuid.uuid1())
-        self._session.add(samplingfeature)
-        self._session.commit()
-        return samplingfeature
+        return self.__create__(samplingfeature)
 
     def createUnit(self, unit):
-        self._session.add(unit)
-        self._session.commit()
-        return unit
+        return self.__create__(unit)
 
     def createOrganization(self, org):
-        self._session.add(org)
-        self._session.commit()
-        return org
-
+        return self.__create__(ogr)
+    
     def createPerson(self, person):
-        self._session.add(person)
-        self._session.commit()
-        return person
+        return self.__create__(person)
 
     def createAffiliation(self, affiliation):
-        self._session.add(affiliation)
-        self._session.commit()
-        return affiliation
+        return self.__create__(affiliation)
 
     def createDataset(self, dataset):
-        self._session.add(dataset)
-        self._session.commit()
-        return dataset
+        return self.__create__(dataset)
 
     def createDatasetResults(self, datasetresult):
-        self._session.add(datasetresult)
-        self._session.commit()
-        return datasetresult
+        return self.__create__(datasetresult)
 
     def createAction(self, action):
-        self._session.add(action)
-        self._session.commit()
-        return action
+        return self.__create__(action)
 
     def createActionby(self, actionby):
-
-        self._session.add(actionby)
-        self._session.commit()
-        return actionby
-
+        return self.__create__(actionby)
+    
     def createFeatureAction(self, action):
-        self._session.add(action)
-        self._session.commit()
-        return action
-
+        return self.__create__(action)
+        
     def createAnnotations(self, anno):
-        self._session.add(anno)
-        self._session.commit()
-        return anno
-
+        return self.__create__(anno)
+        
     def createRelatedAction(self, relatedaction):
-        self._session.add(relatedaction)
-        self._session.commit()
-        return relatedaction
-
+        return self.__create__(relatedaction)
+    
     def createResult(self, result):
         if result.ResultUUID is None:
             result.ResultUUID = str(uuid.uuid1())
-        self._session.add(result)
-        self._session.commit()
-        return result
-
+        return self.__create__(result)
+    
     def createResultValue(self, value):
-        self._session.add(value)
-        self._session.commit()
-        self._session.flush()
-        return value
+        return self.__create__(value)
 
     def createSpatialReference(self, spatialref):
-        self._session.add(spatialref)
-        self._session.commit()
-        return spatialref
+        return self.__create__(spatialref)
 
     def createModel(self, model):
-        self._session.add(model)
-        self._session.commit()
-
-        return model
-
+        return self.__create__(model)
+    
     def createRelatedModel(self, relatedmodel):
-        self._session.add(relatedmodel)
-        self._session.commit()
-        return relatedmodel
-
+        return self.__create__(relatedmodel)
+    
     def createSimulation(self, simulation):
-        self._session.add(simulation)
-        self._session.commit()
-        return simulation
+        return self.__create__(simulation)
 
     def createTimeSeriesResultValues(self, datavalues):
         try:
+            # TODO: PRT - need to look into this further - might need to revise method
             # FXIME: F841 local variable 'tablename' is assigned to but never used.
             # tablename = TimeSeriesResultValues.__tablename__
             datavalues.to_sql(

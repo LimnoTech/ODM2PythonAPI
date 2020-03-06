@@ -2,7 +2,7 @@ from __future__ import (absolute_import, division, print_function)
 
 import warnings
 
-from odm2api import serviceBase
+from odm2api import ServiceBase
 from odm2api.models import (
     ActionAnnotations, ActionDirectives, ActionExtensionPropertyValues, Actions,
     Affiliations, Annotations, AuthorLists, CVActionType, CVAggregationStatistic,
@@ -121,7 +121,7 @@ class SamplingFeatureDataSet():
                     self.related_features = related
 
 
-class ReadODM2(serviceBase):
+class ReadODM2(ServiceBase):
     def _get_columns(self, model):
         """Internal helper function to get a dictionary of a model column properties.
 
