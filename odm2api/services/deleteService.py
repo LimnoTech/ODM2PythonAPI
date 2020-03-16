@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function)
 
 from odm2api import ServiceBase
-from odm2api.models import TimeSeriesResultValues
+#from odm2api.models import TimeSeriesResultValues
 
 class DeleteODM2(ServiceBase):
 
@@ -11,6 +11,7 @@ class DeleteODM2(ServiceBase):
         self._session.close()
         
     # TODO: review this method
+    """
     def deleteTSRValues(self, ids=None, startdate=None, dates=None):
 
         q = self._session.query(TimeSeriesResultValues)
@@ -24,3 +25,4 @@ class DeleteODM2(ServiceBase):
         numvals = q.count()
         q.delete(False)
         return numvals
+    """

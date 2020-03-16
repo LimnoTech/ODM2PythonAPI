@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function)
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.engine import reflection
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, Table
 from sqlalchemy import exc
 import warnings
 
@@ -34,23 +34,25 @@ class Base(object):
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
-
-    #def __repr__(self):
-    #    valuedict = self.__dict__.copy()
-    #    for v in valuedict.keys():
-    #        if 'obj' in v.lower():
-    #            del valuedict[v]
-    #
-    #        if v == '_sa_instance_state':
-    #            del valuedict['_sa_instance_state']
-    #    return '<%s(%s)>' % (self.__class__.__name__, str(valuedict))
+    
+    @declared_attr
+    def __schema__(self):
+        global ODM2Metadata
+        
+        table = None
+        for key in ODM2Meta.tables.keys():
+            if '.' + obj.__tablename__ in key:
+                table = ODM2Meta.tables[key]
+        return table
 
 ModelBase = automap_base(cls=Base)
 ODM2Models = None
+ODM2Metadata = None
 initialized = False 
 def init_api(engine):
-    global ModelBase, ODM2Models, initialized 
+    global ModelBase, ODM2Models, ODM2Metadata, initialized 
     
+    tables = {}
     if not initialized:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=exc.SAWarning)
@@ -60,10 +62,15 @@ def init_api(engine):
                 for schema in insp.get_schema_names():
                     if 'ODM2' in schema:
                         metadata.reflect(schema=schema)
+                        for table_name in insp.get_table_names(schema=schema):
+                            #we don't pass tables back, but by binding engine to their metadata to engine
+                            #we'll get only the proper tables
+                            tables[table_name] = Table(table_name, MetaData(bind=engine, schema=schema))
                 ModelBase.metadata = metadata
                 ModelBase.prepare(reflect=True)
                 initialized = True
                 ODM2Models = ModelBase.classes
+                
             except: #TODO we should figure out now to surpress these warning - this isn't it though
                 #TODO raise appropreate error
                 pass

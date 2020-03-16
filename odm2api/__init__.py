@@ -1,7 +1,7 @@
 from __future__ import (absolute_import, division, print_function)
 
 #from odm2api.ODMconnection import SessionFactory, dbconnection
-from odm2api.base import ServiceBase #modelBase, serviceBase
+from odm2api.base import ServiceBase, ODM2Models
 
 __all__ = [
     'SessionFactory',

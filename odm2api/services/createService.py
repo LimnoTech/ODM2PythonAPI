@@ -3,11 +3,52 @@ from __future__ import (absolute_import, division, print_function)
 import uuid
 
 from odm2api import ServiceBase
+from odm2api import ODM2Models
 
+class CreateODM2(ServiceBase):
+    
+    def create_obj(self, obj):
+        """
+        Accepts one of the ODM2Models and submits it to the database
+        
+        obj = python class from ODM2Models
+        
+        """
+        
+        #validatation? Object not mapped
+        
+        self._session.add(obj)
+        self._session.commit()
+        self._session.close()
+        return obj
+    
+    def create_dataframe(self, obj, dataframe):
+        """
+        Accepts a obj which represent the data structure of the table, and a pandas DataFrame, then bulk 
+        inserts the DataFrame into the database.
+        
+        obj = python class from ODM2Models - note this can be empty
+        dataframe = pandas dataframe
+        """
+        
+        #validation - I wonder what the database will do with extra columns?
+        #probably need to drop those? Return error?
+        
+        df.to_sql(
+            name=obj.__tablename__,
+            con=self._session
+            schema=obj.__schema__
+            index=False,
+            if_exists='append'
+        )
+        
+"""
+#TODO - talk with Anthony about reducing this. He'll probably be ok with me axing it 
+#why are we doing this to ourselves!!!!
 class CreateODM2(ServiceBase):
     # Annotations
 
-    #TODO - talk to Anothony about the need for some many create methods
+    #TODO - talk to Anthony about the need for some many create methods
     #At a minimum we should use private method to reduce the redundate code
     def __create__(self, value):
         self._session.add(value)
@@ -88,6 +129,7 @@ class CreateODM2(ServiceBase):
     def createSimulation(self, simulation):
         return self.__create__(simulation)
 
+    #This is pandas - but why not implement a general dataframe insert method
     def createTimeSeriesResultValues(self, datavalues):
         try:
             # TODO: PRT - need to look into this further - might need to revise method
@@ -107,3 +149,4 @@ class CreateODM2(ServiceBase):
         except Exception as e:
             print(e)
             return None
+            """
