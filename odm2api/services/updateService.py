@@ -4,18 +4,18 @@ __author__ = 'jmeline'
 
 from datetime import datetime
 
-from odm2api import ServiceBase
-from odm2api.models import (Actions, Results)
+from odm2api.base import ServiceBase
+from odm2api.base import ODM2Models
 
 class UpdateODM2(ServiceBase):
     
-    def update(self, value):
-        self._session.add(value)
+    def update(self, obj):
+        self._session.add(obj)
         self._session.commit()
         self._session.close()
-        return value
+        return obj
 
-    
+    #TODO - review and decide what bit of this should be kept.    
     # ################################################################################
     # Core
     # ################################################################################

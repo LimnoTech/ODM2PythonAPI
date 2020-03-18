@@ -1,6 +1,6 @@
 from __future__ import (absolute_import, division, print_function)
 
-from odm2api import ServiceBase
+from odm2api.base import ServiceBase
 #from odm2api.models import TimeSeriesResultValues
 
 class DeleteODM2(ServiceBase):

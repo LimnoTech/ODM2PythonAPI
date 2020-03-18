@@ -1,13 +1,9 @@
 from __future__ import (absolute_import, division, print_function)
 
-#from odm2api.ODMconnection import SessionFactory, dbconnection
-from odm2api.base import ServiceBase, ODM2Models
+from odm2api.base import init_api
 
 __all__ = [
-    'SessionFactory',
-    'dbconnection',
-    'ModelBase',
-    'ServiceBase',
+    'init_api'
 ]
 
 from ._version import get_versions
